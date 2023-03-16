@@ -1,7 +1,8 @@
 # expense-tracker-API  
 *by Gameciel*  
 &nbsp;  
-API URL: `localhost:2000/tracker/data`
+Start Server: `nodemon index.js`  
+API URL: `localhost:2000/tracker/data`  
 
 **Available HTTP Method:**  
 - `GET`  
