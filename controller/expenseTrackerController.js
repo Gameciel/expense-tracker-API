@@ -1,5 +1,6 @@
 import fs from "fs";
 import { autoIncrementID, getMeIndex } from "../logic/API_LOGIC.js";
+import { getExpensesWithParam } from "../logic/expenseTrackerLogic.js";
 
 const datas = JSON.parse(fs.readFileSync("./data/expenseTracker.json"));
 
@@ -9,9 +10,12 @@ const rewriteData = () => {
 
 // get method
 export const getExpenses = (request, response) => {
-	if (true) {
+	const requestParameter = Object.keys(request.query);
+
+	if (!requestParameter.length) {
 		response.status(200).send(datas);
 	} else {
+		getExpensesWithParam(datas, requestParameter, request, response);
 	}
 };
 

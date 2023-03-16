@@ -1,35 +1,35 @@
 [
 	{
 		"id": 1,
-		"date": "17-08-2020",
+		"date": "2020-08-20",
 		"name": "Jajan malam",
 		"nominal": 70000,
 		"category": "food"
 	},
 	{
 		"id": 2,
-		"date": "17-08-2020",
+		"date": "2020-08-20",
 		"name": "Welkin moon",
 		"nominal": 80000,
 		"category": "digital"
 	},
 	{
 		"id": 3,
-		"date": "18-08-2020",
+		"date": "2020-08-21",
 		"name": "Token listrik",
 		"nominal": 200000,
 		"category": "electricity"
 	},
 	{
 		"id": 4,
-		"date": "20-08-2020",
+		"date": "2020-08-23",
 		"name": "Multivitamin",
 		"nominal": 150000,
 		"category": "health"
 	},
 	{
 		"id": 5,
-		"date": "21-08-2020",
+		"date": "2020-08-25",
 		"name": "Obat obatan",
 		"nominal": 35000,
 		"category": "health"
