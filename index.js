@@ -3,7 +3,7 @@ import bodyParser from "body-parser";
 import cors from "cors";
 const PORT = 2000;
 
-import { expenseRouter } from "./routes/expensesRoute.js";
+import { expenseRouter } from "./routes/expenseRoute.js";
 
 const app = express();
 
