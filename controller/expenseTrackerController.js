@@ -31,9 +31,11 @@ export const postExpense = (request, response) => {
 export const deleteExpense = (request, response) => {
 	const indexAt = getMeIndex(datas, request.query.id);
 
-	indexAt < 0
-		? response.status(404).send(`Not found`)
-		: datas.splice(indexAt, 1);
+	if (indexAt < 0) {
+		response.status(404).send(`Not found`);
+	}
+
+	datas.splice(indexAt, 1);
 
 	rewriteData();
 	response.status(200).send(`Data for id ${request.query.id} has been deleted`);
@@ -42,6 +44,11 @@ export const deleteExpense = (request, response) => {
 // patch method
 export const patchExpense = (request, response) => {
 	const indexAt = getMeIndex(datas, request.query.id);
+
+	if (indexAt < 0) {
+		response.status(404).send(`Not found`);
+	}
+
 	const incomingKeys = Object.keys(request.body);
 
 	incomingKeys.forEach(key => {
@@ -57,6 +64,10 @@ export const patchExpense = (request, response) => {
 // put method
 export const putExpense = (request, response) => {
 	const indexAt = getMeIndex(datas, request.query.id);
+
+	if (indexAt < 0) {
+		response.status(404).send(`Not found`);
+	}
 
 	datas[indexAt] = { id: datas[indexAt].id, ...request.body };
 
