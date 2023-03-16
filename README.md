@@ -18,7 +18,7 @@ API URL: `localhost:2000/expenses`
 &nbsp;  
 > **To get expenses by ID**  
 - `localhost:2000/expenses/4`  
-- `localhost:2000/expenses/999`  
+- `localhost:2000/expenses/999` 
 &nbsp;  
 > **To get expenses by category**  
 - `localhost:2000/expenses?category=food`  
@@ -31,6 +31,7 @@ API URL: `localhost:2000/expenses`
 > **To get expenses by start/end date**
 - `localhost:2000/expenses?date-start=2023-02-20`  
 - `localhost:2000/expenses?date-end=2023-02-23`  
+- `localhost:2000/expenses?date-end=1999-02-23`  
 &nbsp;  
 ## POST Method:
 > **Put into request body as JSON as following** ( *assume that we've got the formatted date* )  
