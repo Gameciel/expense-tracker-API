@@ -1,6 +1,7 @@
 # Documentation for expense-tracker-API  
 *by Gameciel*  
 &nbsp;  
+Install required modules: `npm install`  
 Start Server: `nodemon index.js`  
 API URL: `localhost:2000/expenses`  
 
