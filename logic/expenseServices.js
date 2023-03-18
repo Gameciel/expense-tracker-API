@@ -1,86 +1,116 @@
-import fs from "fs";
-import { autoIncrementID, getMeIndex } from './API_LOGIC.js'
+import mysql from 'mysql2';
 
-const datas = JSON.parse(fs.readFileSync("./data/expenseTracker.json"));
+const db = mysql.createConnection({
+	host: "localhost",
+	user: "root",
+	password: "root",
+	database: "expenses",
+	port: 3306,
+	multipleStatements: true,
+});
+
+db.connect(err => {
+	if (err) {
+		console.error(`error ${err}`);
+	} else {
+		console.log(`Connected to MySQL Server`);
+	}
+});
+
+const table = 'expenses.data';
+let queryResult = [];
 
 export const getExpensesByQuery = filter => {
 	const requestQuery = Object.keys(filter);
 
 	if (!requestQuery.length) {
-		return datas;
-
+		db.query(`SELECT * FROM ${table};`, (error, result) => {
+			if(error) {
+				return;
+			} else {
+				queryResult = result;
+			}
+		})
 	} else if (requestQuery.includes("category")) {
-		return datas.filter(data => (data.category == filter.category));
-
+		db.query(`${queryLine} WHERE category = ${filter.category}`, (error, result) => {
+			if(error) {
+				return;
+			} else {
+				queryResult = result;
+			}
+		})
 	} else if (requestQuery.includes("date-start") && requestQuery.includes("date-end")) {
 		const dateStart = new Date(filter["date-start"]);
 		const dateEnd = new Date(filter["date-end"]);
+		
+		db.query(`${queryLine} WHERE date >= ${db.escape(dateStart)} AND date <= ${db.escape(dateEnd)}`, (error, result) => {
+			if(error) {
+				return;
+			} else {
+				queryResult = result;
+			}
+		})
+	} 
 
-		return datas.filter(data => new Date(data.date) >= dateStart && new Date(data.date) <= dateEnd);
-
-	} else if (requestQuery.includes("date-start") && !requestQuery.includes("date-end")) {
-		const dateStart = new Date(filter["date-start"]);
-
-		return datas.filter(data =>  new Date(data.date) >= dateStart);
-
-	} else if (	!requestQuery.includes("date-start") &&	requestQuery.includes("date-end")) {
-		const dateEnd = new Date(filter["date-end"]);
-
-		return datas.filter(data => new Date(data.date) <= dateEnd);
-    
-	}
+	return queryResult;
 };
 
 export const getExpenseByID = paramID => {
-	return datas.filter(data => data.id == paramID);
+	db.query(`SELECT * FROM ${table} WHERE id = ${parseInt(paramID)}`, (error, result) => {
+		if(error) {
+			return;
+		} else {
+			queryResult = result;
+		}
+	})
+
+	return queryResult;
 }
 
 export const insertNewExpense = data => {
-
-	if(Object.keys(data).length) {
-		datas.push({id: autoIncrementID(datas), ...data});
-		fs.writeFileSync('./data/expenseTracker.json', JSON.stringify(datas));
-		return true;
-	} else {
-		return false;
-	}
+	const { date, name, nominal, category } = data;
+	
+	db.query(
+		`INSERT INTO ${table} VALUES = (null, ${db.escape(date)}, ${db.escape(name)},  ${db.escape(nominal)}, ${db.escape(category)})`,
+		(error, result) => {
+			if(error) {
+				return null;
+			} else {
+				return true;
+			}
+		}
+	);
 
 }
 
 export const deleteExpenseByID = paramID => {
-	const indexAt = getMeIndex(datas, paramID);
-
-	if(indexAt < 0) {
-		return false;
-	} else {
-		datas.splice(indexAt, 1);
-		fs.writeFileSync('./data/expenseTracker.json', JSON.stringify(datas));
-		return true;
-	}
+	db.query(
+		`DELETE FROM ${table} WHERE id = ${db.escape(paramID)}`,
+		(error, result) => {
+			if(error) {
+				return null;
+			} else {
+				return true;
+			}
+		}
+	);
 }
 
 export const modifyExpense = (data, paramID) => {
-	const indexAt = getMeIndex(datas, paramID)
+	const toUpdate = [];
 
-	if(indexAt < 0 || Object.keys(data).length === 0) {
-		return false;
-	} else {
-		datas[indexAt] = {...datas[indexAt], ...data};
+	for(let key in data) {
+		toUpdate.push(`${key} = ${db.escape(data[key])}`);
+	};
 
-		fs.writeFileSync('./data/expenseTracker.json', JSON.stringify(datas));
-		return true;
-	}
-}
-
-export const overwriteExpense = (data, paramID) => {
-	const indexAt = getMeIndex(datas, paramID);
-
-	if(indexAt < 0 || Object.keys(data).length === 0) {
-		return false;
-	} else {
-		datas[indexAt] = {id: paramID, ...data};
-
-		fs.writeFileSync('./data/expenseTracker.json', JSON.stringify(datas));
-		return true;
-	}
+	db.query(
+		`UPDATE ${table} SET ${toUpdate} WHERE id = ${db.escape(paramID)}`,
+		(error, result) => {
+			if(error) {
+				return null;
+			} else {
+				return true;
+			}
+		}
+	);
 }
