@@ -57,6 +57,6 @@ export const putExpense = (request, response) => {
 	const putStatus = overwriteExpense(request.body, request.params.id);
 
 	putStatus
-		? response.status(200).send(`Data for id ${request.params.id} has been put.`)
+		? response.status(200).send(`Data for id ${request.params.id} has been patched.`)
 		: response.status(400).send(`Bad Request, no body / ID not found.`);
 };
