@@ -1,10 +1,11 @@
+
 import { 
 	getExpensesByQuery, 
 	getExpenseByID, 
 	deleteExpenseByID, 
 	insertNewExpense, 
-	modifyExpense 
-} from "../logic/expenseServices.js";
+	modifyExpense, 
+	overwriteExpense } from "../logic/expenseServices.js";
 
 
 export const getExpenses = (request, response) => {
@@ -18,9 +19,7 @@ export const getExpenses = (request, response) => {
 
 export const getExpense = (request, response) => {
 	const resultByID = getExpenseByID(request.params.id);
-
-
-
+	
 	resultByID.length
 		? response.status(200).send(resultByID)
 		: response.status(404).send(`Not Found.`);
@@ -53,3 +52,11 @@ export const patchExpense = (request, response) => {
 		: response.status(400).send(`Bad Request, no body / ID not found.`);
 };
 
+
+export const putExpense = (request, response) => {
+	const putStatus = overwriteExpense(request.body, request.params.id);
+
+	putStatus
+		? response.status(200).send(`Data for id ${request.params.id} has been put.`)
+		: response.status(400).send(`Bad Request, no body / ID not found.`);
+};
