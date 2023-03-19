@@ -10,31 +10,11 @@ import { expenseRouter } from "./routes/expenseRoute.js";
 const app = express();
 
 
-// const db = mysql.createConnection({
-// 	host: "localhost",
-// 	user: "root",
-// 	password: "root",
-// 	database: "expenses",
-// 	port: 3306,
-// 	multipleStatements: true,
-// });
-
-// db.connect(err => {
-// 	if (err) {
-// 		console.error(`error ${err}`);
-// 	} else {
-// 		console.log(`Connected to MySQL Server`);
-// 	}
-// });
-
-
-
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
 
 app.use("/expenses", expenseRouter);
-
 
 
 app.listen(PORT, () => {
